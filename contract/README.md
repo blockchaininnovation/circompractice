@@ -64,3 +64,30 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+# ローカルで開発作業
+## ローカルブロックチェーン起動
+```
+anvil
+```
+これを実行すると開発用のローカルのブロックチェーンが起動する．
+サンプル用のアカウント10個が自動的に生成され，コンソールに出力される．
+このプロンプトはそのままにし，以下の作業は別のプロンプトを開き作業を行う．
+
+
+.env.sampleをコピーして.envファイルを生成．
+
+.envファイルを編集：
+```
+DEPLOYER_PRIV_KEY=
+```
+のところに，anvil起動時に出てきた秘密鍵の一つを貼り付け．
+
+```
+forge build
+```
+
+デプロイ．
+```
+forge script script/Deployment.s.sol --rpc-url http://127.0.0.1:8545 --broadcast --legacy
+```
