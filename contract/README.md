@@ -79,7 +79,7 @@ anvil
 
 .envファイルを編集：
 ```
-DEPLOYER_PRIV_KEY=
+PRIVATE_KEY=
 ```
 のところに，anvil起動時に出てきた秘密鍵の一つを貼り付け．
 
@@ -89,5 +89,5 @@ forge build
 
 デプロイ．
 ```
-forge script script/Deployment.s.sol --rpc-url http://127.0.0.1:8545 --broadcast --legacy
+forge script script/Deployment.s.sol --rpc-url http://127.0.0.1:8545 --broadcast
 ```

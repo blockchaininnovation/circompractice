@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.19;
 
 contract Consumer {
     function getBalance() public view returns (uint) {
@@ -11,15 +11,17 @@ contract Consumer {
 
 contract ContractWallet {
     mapping(address => uint) public balance;
-    mapping(address => uint) public passwd_hash;
+    mapping(address => uint) public registered_passwd_hash;
     mapping(bytes => bool) private used_proof;
 
     function _check_passwd(
         address sent_from,
         uint passwd_hash,
         bytes memory proof
-    ) private {
+    ) private returns (bool) {
         // todo verify zkp proof.
+
+        return false;
     }
 
     function transfer(
@@ -28,7 +30,7 @@ contract ContractWallet {
         uint passwd_hash,
         bytes memory proof
     ) public {
-        require(used_proof(proof), "This proof is already used.");
+        require(used_proof[proof], "This proof is already used.");
         require(
             _check_passwd(msg.sender, passwd_hash, proof),
             "Invalid proof."
