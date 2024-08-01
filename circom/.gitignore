@@ -136,6 +136,9 @@ dist
 *.zkey
 *.ptau
 *.wtns
-*.json
+
+proof.json
+public.json
+verification_key.json
 
 work
