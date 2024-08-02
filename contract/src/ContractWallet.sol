@@ -40,4 +40,8 @@ contract ContractWallet {
         balance[msg.sender] -= amount;
         send_to.transfer(amount);
     }
+
+    function testmethod() public pure returns (uint) {
+        return 12345;
+    }
 }

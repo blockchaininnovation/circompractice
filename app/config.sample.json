@@ -1,0 +1,13 @@
+{
+    "blockchain": {
+        "network": "anvil",
+        "rpcUrl": "http://127.0.0.1:8545",
+        "chainId": 1337
+    },
+    "account": {
+        "privateKey": "0x..."
+    },
+    "contract": {
+        "address": "0x..."
+    }
+}
