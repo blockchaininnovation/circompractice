@@ -5,7 +5,7 @@ WORKDIR=work/$1
 #witnessを生成．
 #回路と，そのインプットをもとにウィットネスを生成する．
 echo "14. Calculate the witness"
-node $WORKDIR/$1_js/generate_witness.js $WORKDIR/$1_js/$1.wasm circuit/$2.json $WORKDIR/witness.wtns
+node $WORKDIR/$1_js/generate_witness.js $WORKDIR/$1_js/$1.wasm circuit/input/$2.json $WORKDIR/witness.wtns
 
 #証明を生成．
 #回路，ウィットネスと証明鍵をもとに証明（proof.json）と公開値（public.json)を生成．
