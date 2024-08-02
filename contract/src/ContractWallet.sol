@@ -1,40 +1,45 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-contract Consumer {
-    function getBalance() public view returns (uint) {
-        return address(this).balance;
-    }
-
-    function deposit() public payable {}
+interface PlonkVerifierInterface {
+    function verifyProof(
+        uint256[24] calldata _proof,
+        uint256[2] calldata _pubSignals
+    ) external view returns (bool);
 }
 
 contract ContractWallet {
+    PlonkVerifierInterface verifierContract;
+    constructor(address verifierContractAddress) {
+        verifierContract = PlonkVerifierInterface(verifierContractAddress);
+    }
+
     mapping(address => uint) public balance;
     mapping(address => uint) public registered_passwd_hash;
     mapping(bytes => bool) private used_proof;
 
-    function _check_passwd(
-        address sent_from,
-        uint passwd_hash,
-        bytes memory proof
-    ) private returns (bool) {
-        // todo verify zkp proof.
+    function deposit() public payable {
+        require(msg.value > 0, "Deposit amount must be greater than zero");
 
-        return false;
+        balance[msg.sender] += msg.value;
+    }
+
+    function getTotalBalance() public view returns (uint) {
+        return address(this).balance;
     }
 
     function transfer(
         address payable send_to,
         uint amount,
-        uint passwd_hash,
-        bytes memory proof
+        uint256[24] calldata _proof,
+        uint256[2] calldata _pubSignals
     ) public {
-        require(used_proof[proof], "This proof is already used.");
-        require(
-            _check_passwd(msg.sender, passwd_hash, proof),
-            "Invalid proof."
-        );
+        // require(used_proof[proof], "This proof is already used.");
+
+        address from = address(uint160(_pubSignals[1]));
+        require(msg.sender == from, "You are not prover.");
+        bool validProof = verifierContract.verifyProof(_proof, _pubSignals);
+        require(validProof, "Invalid proof.");
         require(balance[msg.sender] >= amount, "Not enough money");
 
         balance[msg.sender] -= amount;

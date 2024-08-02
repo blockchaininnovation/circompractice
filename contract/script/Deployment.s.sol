@@ -2,7 +2,9 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
-import "./../src/ContractWallet.sol";
+import "../src/ContractWallet.sol";
+import "../src/Verifier.sol";
+
 
 contract Deployment is Script {
     function run() external {
@@ -10,7 +12,8 @@ contract Deployment is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        ContractWallet w = new ContractWallet();
+        PlonkVerifier v = new PlonkVerifier();
+        ContractWallet w = new ContractWallet(address(v));
 
         vm.stopBroadcast();
 

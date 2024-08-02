@@ -16,4 +16,4 @@ template Hash () {
 }
 
 
-component main = Hash();
+// component main = Hash();
