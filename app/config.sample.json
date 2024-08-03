@@ -5,9 +5,9 @@
         "chainId": 1337
     },
     "account": {
-        "privateKey": "0x..."
+        "privateKey": "0x0000"
     },
     "contract": {
-        "address": "0x..."
+        "address": "0x0000"
     }
 }

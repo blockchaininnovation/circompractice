@@ -50,6 +50,8 @@ async function callTestMethod() {
 
     } catch (error) {
         console.error('Transaction failed:', error);
+    } finally {
+        process.exit(0);
     }
 }
 
@@ -61,6 +63,8 @@ async function getTotalBalance() {
 
     } catch (error) {
         console.error('Transaction failed:', error);
+    } finally {
+        process.exit(0);
     }
 }
 
@@ -82,6 +86,8 @@ async function executeTransfer(sendTo, amountInEth, proof, pubSignals) {
         console.log(`Transfer confirmed in block: ${receipt.blockNumber}`);
     } catch (error) {
         console.error('Transfer failed:', error);
+    } finally {
+        process.exit(0);
     }
 }
 
@@ -119,14 +125,14 @@ async function executeTransferByFile(sendTo, amountInEth, proofFilePath, pubSign
         for (let i = 0; i < ss_proof.length; i++) {
             const s = ss_proof[i];
             // console.log("s: " + s);
-            proofForContract.push(BigInt("0x" + s));  
+            proofForContract.push(BigInt("0x" + s));
         }
 
         const publicSignalsForContract = [];
         for (let i = 0; i < ss_pub.length; i++) {
             const s = ss_pub[i];
             console.log("s: " + s);
-            publicSignalsForContract.push(BigInt("0x" + s));  
+            publicSignalsForContract.push(BigInt("0x" + s));
         }
 
         console.log("proofForContract: " + proofForContract.length + " " + proofForContract)
@@ -136,6 +142,8 @@ async function executeTransferByFile(sendTo, amountInEth, proofFilePath, pubSign
     } catch (error) {
         console.error('Failed to load proof or public signals:', error);
         throw error;
+    } finally {
+        process.exit(0);
     }
 }
 
@@ -147,7 +155,7 @@ async function getBalance(address) {
         console.log(`Balance of ${address}: ${ethers.utils.formatEther(balance)} ETH`);
     } catch (error) {
         console.error('Failed to get balance:', error);
-    }
+    } 
 }
 
 async function depositEther(amountInEth) {
@@ -165,6 +173,8 @@ async function depositEther(amountInEth) {
         console.log(`Deposit confirmed in block: ${receipt.blockNumber}`);
     } catch (error) {
         console.error('Deposit failed:', error);
+    } finally {
+        process.exit(0);
     }
 }
 // テストケースの実行
@@ -172,7 +182,7 @@ getBalance("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
 getBalance("0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
 
 // callTestMethod();
-getTotalBalance();
 // depositEther("100");
-// executeTransferByFile("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "10", "../circom/work/auth/proof.json", "../circom/work/auth/public.json");
+// getTotalBalance();
+executeTransferByFile("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "10", "../circom/work/auth/proof.json", "../circom/work/auth/public.json");
 
