@@ -1,5 +1,3 @@
-const { createPublicClient, http, parseEther } = require('viem');
-const { privateKeyToAccount } = require('viem/accounts');
 const { ethers } = require('ethers');
 const fs = require('fs');
 const snarkjs = require('snarkjs');
@@ -8,28 +6,10 @@ const snarkjs = require('snarkjs');
 // config.jsonの読み込み
 const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
 
-// ブロックチェーン接続の設定
-const client = createPublicClient({
-    chain: {
-        id: config.blockchain.chainId,
-        name: config.blockchain.network,
-        network: config.blockchain.network,
-        nativeCurrency: {
-            name: 'Ether',
-            symbol: 'ETH',
-            decimals: 18,
-        },
-    },
-    transport: http(config.blockchain.rpcUrl),
-});
-
-// アカウント情報の設定
-const privateKey = config.account.privateKey;
-const account = privateKeyToAccount(privateKey);
 
 // ethersを使用してウォレットを作成
-const provider = new ethers.providers.JsonRpcProvider(config.blockchain.rpcUrl);
-const wallet = new ethers.Wallet(privateKey, provider);
+const provider = new ethers.JsonRpcProvider(config.blockchain.rpcUrl);
+const wallet = new ethers.Wallet(config.account.privateKey, provider);
 
 // コントラクトのアドレスとABIの設定
 const contractAddress = config.contract.address;
@@ -70,10 +50,10 @@ async function getTotalBalance() {
 
 async function executeTransfer(sendTo, amountInEth, proof, pubSignals) {
     try {
-        const amountInWei = parseEther(amountInEth);
+        const amountInWei = ethers.parseEther(amountInEth);
         const gasLimit = 1000000;
-        const maxFeePerGas = ethers.utils.parseUnits('2', 'gwei');
-        const maxPriorityFeePerGas = ethers.utils.parseUnits('1', 'gwei');
+        const maxFeePerGas = ethers.parseUnits('2', 'gwei');
+        const maxPriorityFeePerGas = ethers.parseUnits('1', 'gwei');
 
         const tx = await contract.transfer(sendTo, amountInWei, proof, pubSignals, {
             gasLimit: gasLimit,
@@ -149,10 +129,8 @@ async function executeTransferByFile(sendTo, amountInEth, proofFilePath, pubSign
 
 async function getBalance(address) {
     try {
-        const balance = await client.getBalance({
-            address: address,
-        });
-        console.log(`Balance of ${address}: ${ethers.utils.formatEther(balance)} ETH`);
+        const balance =await provider.getBalance(address);
+        console.log(`Balance of ${address}: ${ethers.formatEther(balance)} ETH`);
     } catch (error) {
         console.error('Failed to get balance:', error);
     } 
@@ -160,7 +138,7 @@ async function getBalance(address) {
 
 async function depositEther(amountInEth) {
     try {
-        const amountInWei = parseEther(amountInEth);
+        const amountInWei = ethers.parseEther(amountInEth);
 
         const tx = await contract.deposit({
             value: amountInWei,
