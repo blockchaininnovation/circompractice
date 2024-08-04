@@ -1,6 +1,6 @@
 pragma circom 2.0.0;
 
-include "./hash_mimc.circom";
+include "./hash.circom";
 
 template UserAuthentication () {  
 

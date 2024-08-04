@@ -14,6 +14,3 @@ template Hash () {
    
    out <== hasher.out;
 }
-
-
-component main = Hash();
