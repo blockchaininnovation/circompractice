@@ -18,6 +18,10 @@ contract ContractWallet {
     mapping(address => uint) public registered_passwd_hash;
     bytes32[] private used_proof;
 
+    function registerPasswdHash(uint passwd_hash) public {
+        registered_passwd_hash[msg.sender] = passwd_hash;
+    }
+
     function deposit() public payable {
         require(msg.value > 0, "Deposit amount must be greater than zero");
         balance[msg.sender] += msg.value;
@@ -40,14 +44,26 @@ contract ContractWallet {
             }
         }
 
+        // プルーフの署名者が自分自身であることを確認
         address from = address(uint160(_pubSignals[1]));
         require(msg.sender == from, "You are not prover.");
+
+        // パスワードのハッシュチェック
+        uint password_hash = uint(_pubSignals[0]);
+        require(registered_passwd_hash[from] == password_hash, "Invalid password.");
+
+        // プルーフの検証
         bool validProof = verifierContract.verifyProof(_proof, _pubSignals);
         require(validProof, "Invalid proof.");
+
+        // 送金金額が，残高で足りるか確認
         require(balance[msg.sender] >= amount, "Not enough money");
 
+        // 送金処理
         balance[msg.sender] -= amount;
         send_to.transfer(amount);
+
+        // 使用済みプルーフの記録
         used_proof.push(keccak256(abi.encodePacked(_proof)));
     }
 

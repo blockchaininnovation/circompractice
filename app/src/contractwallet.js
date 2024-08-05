@@ -17,7 +17,8 @@ const abi = [
     "function testmethod() public pure returns (uint256)",
     "function transfer(address payable send_to, uint amount, uint256[24] calldata _proof, uint256[2] calldata _pubSignals) public",
     "function deposit() public payable",
-    "function getTotalBalance() public view returns (uint256)"
+    "function getTotalBalance() public view returns (uint256)",
+    "function registerPasswdHash(uint passwd_hash) public"
 ];
 
 const contract = new ethers.Contract(contractAddress, abi, wallet);
@@ -66,6 +67,24 @@ async function executeTransfer(sendTo, amountInEth, proof, pubSignals) {
         console.log(`Transfer confirmed in block: ${receipt.blockNumber}`);
     } catch (error) {
         console.error('Transfer failed:', error);
+    } finally {
+        process.exit(0);
+    }
+}
+
+async function registerPassword(passwordHash) {
+    try {
+        const gasLimit = 1000000;
+        const maxFeePerGas = ethers.parseUnits('2', 'gwei');
+        const maxPriorityFeePerGas = ethers.parseUnits('1', 'gwei');
+
+        const tx = await contract.registerPasswdHash(passwordHash);
+        console.log(`RegisterPasswdHash transaction sent: ${tx.hash}`);
+
+        const receipt = await tx.wait();
+        console.log(`RegisterPasswdHash confirmed in block: ${receipt.blockNumber}`);
+    } catch (error) {
+        console.error('RegisterPasswdHash failed:', error);
     } finally {
         process.exit(0);
     }
@@ -162,5 +181,6 @@ getBalance("0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
 // callTestMethod();
 // depositEther("100");
 // getTotalBalance();
+// registerPassword("9627991198915864505483325328123466813840867255700822858612450669559302123886");
 executeTransferByFile("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "10", "../circom/work/auth/proof.json", "../circom/work/auth/public.json");
 
