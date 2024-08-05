@@ -38,4 +38,5 @@ async function execute_mimc() {
 }
 
 
-execute_mimc()
+execute_sha256();
+// execute_mimc();
