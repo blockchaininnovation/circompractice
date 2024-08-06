@@ -6,7 +6,7 @@ template Multiplier2 () {
    signal input b;  
    signal output c;  
 
-   c <== a * b + 2;
+    // 回路を記述してください．
 }
 
 component main = Multiplier2();

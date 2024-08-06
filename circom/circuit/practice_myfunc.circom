@@ -8,13 +8,8 @@ template MyFunc() {
     signal input b;
     signal output out;
     
-    component gt = GreaterThan(252);
-    gt.in[0] <== w;
-    gt.in[1] <== 10;
+    // 回路を記述してください．
 
-    signal t;
-    t <== gt.out * (a + b);
-    out <== t + (1- gt.out) * (a - b);
 }
 
 component main = MyFunc();
