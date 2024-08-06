@@ -72,7 +72,7 @@ async function executeTransfer(sendTo, amountInEth, proof, pubSignals) {
     }
 }
 
-async function registerPassword(passwordHash) {
+async function registerPasswdHash(passwordHash) {
     try {
         const gasLimit = 1000000;
         const maxFeePerGas = ethers.parseUnits('2', 'gwei');
@@ -181,6 +181,6 @@ getBalance("0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
 // callTestMethod();
 // depositEther("100");
 // getTotalBalance();
-// registerPassword("9627991198915864505483325328123466813840867255700822858612450669559302123886");
+// registerPasswdHash("9627991198915864505483325328123466813840867255700822858612450669559302123886");
 executeTransferByFile("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "10", "../circom/work/auth/proof.json", "../circom/work/auth/public.json");
 

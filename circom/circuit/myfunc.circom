@@ -8,16 +8,16 @@ template MyFunc() {
     signal input b;
     signal output out;
     
-    component ise = IsEqual();
-    ise.in[0] <== w;
-    ise.in[1] <== 1;
+    component eq = IsEqual();
+    eq.in[0] <== w;
+    eq.in[1] <== 1;
 
     signal t1;
     t1 <== a * (b + 3);
 
     signal t2;
-    t2 <== ise.out * t1;
-    out <== t2 + (1- ise.out) * (a + b);
+    t2 <== eq.out * t1;
+    out <== t2 + (1- eq.out) * (a + b);
 }
 
 component main = MyFunc();

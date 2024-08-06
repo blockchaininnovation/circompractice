@@ -21,3 +21,15 @@ echo "---------- Start hash_sha256 ----------"
 
 echo "---------- Start auth ----------"
 ./zkall.sh auth 12
+
+echo "---------- Start practice_mutiply ----------"
+./zkall.sh practice_mutiply 12
+
+echo "---------- Start practice_cubic ----------"
+./zkall.sh practice_cubic 12
+
+echo "---------- Start practice_myfunc ----------"
+./zkall.sh practice_myfunc 12
+
+echo "---------- Start practice_sum_up ----------"
+./zkall.sh practice_sum_up 12
